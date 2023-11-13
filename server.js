@@ -87,15 +87,17 @@ app.post('/api/ibunker', (req, res) => {
     });
 })
 
-app.use((req, res) => {
-    res.status(404).json(error('Invalid Request', res.statusCode));
-});
-
 app.get('/api', (req, res) => {
     console.log("Test Connection...")
     res.json({
         success: true
     });
+})
+app.get('*', function(req, res){
+    res.status(404).json({
+        success: false,
+        error: "Invalid request link!"
+    })
 })
 
 app.listen(port, () => {
