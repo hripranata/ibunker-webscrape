@@ -4,6 +4,8 @@ const app = express();
 require('dotenv').config()
 const puppeteer = require('puppeteer');
 
+console.log(process.env.NODE_ENV);
+console.log(process.env.CLIENT_ORIGIN_PROD);
 app.use(cors({
     credentials:true,
     origin: [process.env.NODE_ENV !== 'production' ?process.env.CLIENT_ORIGIN_DEV : process.env.CLIENT_ORIGIN_PROD]
