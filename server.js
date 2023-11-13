@@ -91,6 +91,13 @@ app.use((req, res) => {
     res.status(404).json(error('Invalid Request', res.statusCode));
 });
 
+app.get('/api', (req, res) => {
+    console.log("Test Connection...")
+    res.json({
+        success: true
+    });
+})
+
 app.listen(port, () => {
     console.log(`Server is running in port ${port}`);
 });
