@@ -28,7 +28,18 @@ const date_now = () => {
 
 app.post('/api/ibunker', (req, res) => {
     const {vessel, date} = req.body
-    puppeteer.launch().then(async function(browser) {
+    puppeteer.launch({
+        args: [
+          "--disable-setuid-sandbox",
+          "--no-sandbox",
+          "--single-process",
+          "--no-zygote",
+        ],
+        executablePath:
+          process.env.NODE_ENV === "production"
+            ? process.env.PUPPETEER_EXECUTABLE_PATH
+            : puppeteer.executablePath(),
+    }).then(async function(browser) {
         const start_date = date
         const end_date = date_now()
         const page = await browser.newPage();
@@ -84,7 +95,10 @@ app.post('/api/ibunker', (req, res) => {
         res.json({
             vessels_queue: vessels_queue
         });
-    });
+    }).catch(e => {
+        console.error(e);
+        res.send(`Something went wrong while running Puppeteer: ${e}`);
+    })
 })
 
 app.get('/api', (req, res) => {
